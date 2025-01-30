@@ -7,37 +7,42 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState } from "react";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 import { useNavigation } from "@react-navigation/native";
-import Main from "./Main";
+import CarFeature from "./CarFeature";
 
 const LogIn = () => {
   const navigation = useNavigation();
   const [screen, setScreen] = useState("login");
   console.log(screen);
   return (
-    <View>
-      {screen === "login" && (
+    <View style={styles.mainContainer}>
+      {screen === "login" ? (
         <View style={styles.page}>
-          <Image
-            style={styles.img}
-            source={require("@/assets/images/logo.jpg")}
-          />
+          {/* <Image style={styles.img} source={require("@/assets/images/man")} /> */}
           <Text style={styles.head}>LOGIN</Text>
           <Text style={styles.topic}>Wellcome to CarStore</Text>
-          <View style={styles.input}>
-            <Image
+          <View
+            style={{
+              width: "100%",
+              alignItems: "center",
+              gap: 30,
+              marginTop: 20,
+            }}
+          >
+            <View style={{ width: "95%" }}>
+              {/* <Image
               style={styles.image}
-              source={require("@/assets/images/user.jpg")}
-            />
-            <TextInput style={styles.input} placeholder="Username" />
-          </View>
-          <View style={styles.input}>
-            <Image
+              source={require("@/assets/images/man")}
+            /> */}
+              <TextInput style={styles.input} placeholder="Username" />
+            </View>
+            <View style={{ width: "95%" }}>
+              {/* <Image
               style={styles.image}
-              source={require("@/assets/images/lock1.jpg")}
-            />
-            <TextInput style={styles.input} placeholder="Password" />
+              source={require("@/assets/images/man")}
+            /> */}
+              <TextInput style={styles.input} placeholder="Password" />
+            </View>
           </View>
           <View>
             <Pressable>
@@ -55,8 +60,10 @@ const LogIn = () => {
             </Text>
           </View>
         </View>
+      ) : (
+        <CarFeature />
       )}
-      {screen === "main" && <Main />}
+      {/* {screen === "main" && <Main />} */}
     </View>
   );
 };
@@ -64,6 +71,13 @@ const LogIn = () => {
 export default LogIn;
 
 const styles = StyleSheet.create({
+  mainContainer: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "orange",
+  },
   img: {
     width: 110,
     height: 110,
@@ -73,8 +87,8 @@ const styles = StyleSheet.create({
   page: {
     width: "100%",
     height: "100%",
-    backgroundColor: "orange",
     alignItems: "center",
+    top: 50,
   },
   head: {
     fontSize: 30,
@@ -87,14 +101,12 @@ const styles = StyleSheet.create({
   },
   input: {
     backgroundColor: "silver",
-    marginTop: 25,
-    width: "85%",
-    gap: 15,
-    display: "flex",
-    flexDirection: "row",
-    fontSize: 20,
-    marginBottom: 20,
-    borderRadius: 8,
+    paddingVertical: 20,
+    paddingLeft: 10,
+    borderRadius: 10,
+    outlineColor: "transparent",
+    paddingHorizontal: 10,
+    fontSize: 24,
   },
   image: {
     width: 30,
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 50,
     backgroundColor: "black",
-    width: "85%",
+    width: "95%",
     borderRadius: 8,
     paddingVertical: 15,
   },
@@ -128,5 +140,6 @@ const styles = StyleSheet.create({
   title: {
     color: "green",
     fontWeight: "bold",
+    paddingLeft: 7,
   },
 });

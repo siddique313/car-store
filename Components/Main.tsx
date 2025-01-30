@@ -4,7 +4,7 @@ import React from "react";
 const Main = () => {
   return (
     <View style={styles.main}>
-      <Image style={styles.img} source={require("@/assets/images/logo.jpg")} />
+      {/* <Image style={styles.img} source={require("@/assets/images/logo.jpg")} /> */}
       <Text style={styles.carname}>CAR STORE</Text>
     </View>
   );
