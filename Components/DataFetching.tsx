@@ -5,7 +5,14 @@ import { data } from "./data";
 export default function DataFetching() {
   return (
     <ScrollView>
-      <View style={{ flexDirection: "row", gap: 20, flexWrap: "wrap" }}>
+      <View
+        style={{
+          flexDirection: "row",
+          gap: 17,
+          flexWrap: "wrap",
+          alignSelf: "center",
+        }}
+      >
         {data.map<any>((item, idx) => {
           return (
             <View key={idx}>

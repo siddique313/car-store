@@ -1,13 +1,32 @@
-import { View, Text, Button } from "react-native";
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
+// import { View, Text, Button, StyleSheet } from "react-native";
+// import React from "react";
+// import { NativeStackScreenProps } from "@react-navigation/native-stack";
+// import { rootStackPharmList } from "./screen/StackNavigator";
+// export default function Home({ navigation }: HomeProp) {
+//   return (
+//     <View style={styles.container}>
+//       <Text style={styles.text}>Home</Text>
+//       <Button
+//         title="Press btn"
+//         // onPress={() =>
+//         //   navigation.navigate("Detail", {
+//         //     product: "494",
+//         //   })
+//         // }
 
-export default function Home() {
-  const navigate = useNavigation();
-  return (
-    <View>
-      <Text>Home</Text>
-      <Button onPress={() => navigate.navigate("Second")} title="Press btn" />
-    </View>
-  );
-}
+//       />
+//     </View>
+//   );
+// }
+// const styles = StyleSheet.create({
+//   container: {
+//     height: "1000vh",
+//     backgroundColor: "orange",
+//   },
+//   text: {
+//     color: "white",
+//     textAlign: "center",
+//     justifyContent: "center",
+//     alignItems: "center",
+//   },
+// });
