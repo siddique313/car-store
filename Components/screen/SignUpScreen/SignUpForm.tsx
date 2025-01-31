@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
-import { rootStackPharmList } from "../StackNavigator";
+import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { rootStackPharmList } from "../StackNavigator";
+type SignupProop = NativeStackScreenProps<rootStackPharmList, "Home">;
 
-export const SignUp = () => {
+export const SignUp = ({ navigation }: SignupProop) => {
   return (
     <View style={styles.page}>
-      {/* <Image style={styles.img} source={require("@/assets/images/man")} /> */}
       <Text style={styles.head}>SIGN IN</Text>
       <Text style={styles.topic}>Welcome to CarStore</Text>
       <View
@@ -49,8 +49,8 @@ export const SignUp = () => {
       </View>
 
       <View style={styles.button}>
-        <Pressable>
-          <Text style={styles.login}>Sign ins</Text>
+        <Pressable onPress={() => navigation.push("Home")} disabled={true}>
+          <Text style={styles.login}>Sign in</Text>
         </Pressable>
       </View>
       <View style={styles.account}>

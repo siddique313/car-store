@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
 import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { rootStackPharmList } from "../StackNavigator";
