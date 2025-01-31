@@ -7,20 +7,20 @@ import {
   Pressable,
 } from "react-native";
 import React, { useState } from "react";
-import { useNavigation } from "@react-navigation/native";
-import CarFeature from "./CarFeature";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { rootStackPharmList } from "../StackNavigator";
+type SignupProop = NativeStackScreenProps<rootStackPharmList, "Signup">;
 
-const LogIn = () => {
-  const navigation = useNavigation();
-  const [screen, setScreen] = useState("login");
-  console.log(screen);
+const LogIn = ({ navigation }: SignupProop) => {
+  const [screen, setScreen] = useState<unknown>("");
+
   return (
-    <View style={styles.mainContainer}>
-      {screen === "login" ? (
+    <>
+      {screen == "" ? (
         <View style={styles.page}>
           {/* <Image style={styles.img} source={require("@/assets/images/man")} /> */}
           <Text style={styles.head}>LOGIN</Text>
-          <Text style={styles.topic}>Wellcome to CarStore</Text>
+          <Text style={styles.topic}>Welcome to CarStore</Text>
           <View
             style={{
               width: "100%",
@@ -30,18 +30,14 @@ const LogIn = () => {
             }}
           >
             <View style={{ width: "95%" }}>
-              {/* <Image
-              style={styles.image}
-              source={require("@/assets/images/man")}
-            /> */}
               <TextInput style={styles.input} placeholder="Username" />
             </View>
             <View style={{ width: "95%" }}>
-              {/* <Image
-              style={styles.image}
-              source={require("@/assets/images/man")}
-            /> */}
-              <TextInput style={styles.input} placeholder="Password" />
+              <TextInput
+                style={styles.input}
+                placeholder="Password"
+                secureTextEntry={true}
+              />
             </View>
           </View>
           <View>
@@ -50,21 +46,24 @@ const LogIn = () => {
             </Pressable>
           </View>
           <View style={styles.button}>
-            <Pressable onPress={() => setScreen("main")}>
+            <Pressable>
               <Text style={styles.login}>LOGIN</Text>
             </Pressable>
           </View>
           <View style={styles.account}>
             <Text style={styles.paragraph}>
-              don't have an account?<Text style={styles.title}>Sign Up</Text>
+              don't have an account?
+              <Text
+                style={styles.title}
+                onPress={() => navigation.navigate("Signup")}
+              >
+                Sign Up
+              </Text>
             </Text>
           </View>
         </View>
-      ) : (
-        <CarFeature />
-      )}
-      {/* {screen === "main" && <Main />} */}
-    </View>
+      ) : null}
+    </>
   );
 };
 
@@ -76,7 +75,6 @@ const styles = StyleSheet.create({
     height: "100%",
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "orange",
   },
   img: {
     width: 110,
@@ -88,7 +86,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
-    top: 50,
+    justifyContent: "center",
+    backgroundColor: "orange",
   },
   head: {
     fontSize: 30,
