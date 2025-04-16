@@ -1,137 +1,280 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from "react-native";
-import React, { useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  Pressable,
+  Image,
+  ActivityIndicator,
+  KeyboardAvoidingView,
+  Platform,
+} from "react-native";
+import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { rootStackPharmList } from "../StackNavigator";
+import { Ionicons } from "@expo/vector-icons";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 type SignupProop = NativeStackScreenProps<rootStackPharmList, "Signup">;
 
+// Define Zod schema for form validation
+const loginSchema = z.object({
+  username: z.string().min(1, "Username is required"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type LoginFormData = z.infer<typeof loginSchema>;
+
 const LogIn = ({ navigation }: SignupProop) => {
-  const [screen, setScreen] = useState<unknown>("");
+  const [loading, setLoading] = React.useState(false);
+  const [showPassword, setShowPassword] = React.useState(false);
+  const [loginError, setLoginError] = React.useState("");
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    setLoading(true);
+    setLoginError("");
+
+    if (
+      data.username.toLowerCase().includes("demo") &&
+      data.password === "demo123"
+    ) {
+      navigation.navigate("Home");
+    } else {
+      setLoginError("Invalid username or password");
+    }
+
+    setLoading(false);
+  };
 
   return (
-    <>
-      {screen == "" ? (
-        <View style={styles.page}>
-          {/* <Image style={styles.img} source={require("@/assets/images/man")} /> */}
-          <Text style={styles.head}>LOGIN</Text>
-          <Text style={styles.topic}>Welcome to CarStore</Text>
-          <View
-            style={{
-              width: "100%",
-              alignItems: "center",
-              gap: 30,
-              marginTop: 20,
-            }}
-          >
-            <View style={{ width: "95%" }}>
-              <TextInput style={styles.input} placeholder="Username" />
-            </View>
-            <View style={{ width: "95%" }}>
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                secureTextEntry={true}
-              />
-            </View>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={styles.container}
+    >
+      <View style={styles.page}>
+        <Image
+          style={styles.logo}
+          source={require("@/assets/images/car2.jpeg")}
+        />
+
+        <Text style={styles.head}>Welcome Back</Text>
+        <Text style={styles.subtitle}>Sign in to continue</Text>
+
+        {loginError ? (
+          <View style={styles.errorContainer}>
+            <Text style={styles.errorText}>{loginError}</Text>
           </View>
-          <View>
-            <Pressable>
-              <Text style={styles.forgot}>Forgot password?</Text>
-            </Pressable>
+        ) : null}
+
+        <View style={styles.inputs}>
+          <View style={styles.inputContainer}>
+            <Controller
+              control={control}
+              name="username"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <TextInput
+                  style={[styles.input, errors.username && styles.inputError]}
+                  placeholder="Username"
+                  value={value}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  autoCapitalize="none"
+                />
+              )}
+            />
+            {errors.username && (
+              <Text style={styles.errorText}>{errors.username.message}</Text>
+            )}
           </View>
-          <View style={styles.button}>
-            <Pressable>
-              <Text style={styles.login}>LOGIN</Text>
-            </Pressable>
-          </View>
-          <View style={styles.account}>
-            <Text style={styles.paragraph}>
-              don't have an account?
-              <Text
-                style={styles.title}
-                onPress={() => navigation.navigate("Signup")}
-              >
-                Sign Up
-              </Text>
-            </Text>
+
+          <View style={styles.inputContainer}>
+            <Controller
+              control={control}
+              name="password"
+              render={({ field: { onChange, onBlur, value } }) => (
+                <View style={styles.passwordContainer}>
+                  <TextInput
+                    style={[styles.input, errors.password && styles.inputError]}
+                    placeholder="Password"
+                    secureTextEntry={!showPassword}
+                    value={value}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                  />
+                  <Pressable
+                    style={styles.eyeIcon}
+                    onPress={() => setShowPassword(!showPassword)}
+                  >
+                    <Ionicons
+                      name={showPassword ? "eye-off" : "eye"}
+                      size={24}
+                      color="#666"
+                    />
+                  </Pressable>
+                </View>
+              )}
+            />
+            {errors.password && (
+              <Text style={styles.errorText}>{errors.password.message}</Text>
+            )}
           </View>
         </View>
-      ) : null}
-    </>
+
+        <Pressable style={styles.forgotButton}>
+          <Text style={styles.forgotText}>Forgot password?</Text>
+        </Pressable>
+
+        <Pressable
+          style={[styles.button, loading && styles.buttonDisabled]}
+          onPress={handleSubmit(onSubmit)}
+          disabled={loading}
+        >
+          {loading ? (
+            <ActivityIndicator color="#fff" />
+          ) : (
+            <Text style={styles.buttonText}>LOGIN</Text>
+          )}
+        </Pressable>
+
+        <View style={styles.footer}>
+          <Text style={styles.footerText}>Don't have an account? </Text>
+          <Pressable onPress={() => navigation.navigate("Signup")}>
+            <Text style={styles.footerLink}>Sign Up</Text>
+          </Pressable>
+        </View>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
-
 export default LogIn;
+// ... (keep the same styles as before)
 
 const styles = StyleSheet.create({
-  mainContainer: {
-    width: "100%",
-    height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  img: {
-    width: 110,
-    height: 110,
-    borderRadius: "50%",
-    marginTop: 120,
+  container: {
+    flex: 1,
   },
   page: {
-    width: "100%",
-    height: "100%",
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "orange",
+    backgroundColor: "#f8f9fa",
+    paddingHorizontal: 24,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 30,
   },
   head: {
-    fontSize: 30,
-    color: "black",
-    marginTop: 50,
+    fontSize: 28,
     fontWeight: "bold",
+    color: "#333",
+    marginBottom: 8,
   },
-  topic: {
-    fontSize: 20,
+  subtitle: {
+    fontSize: 16,
+    color: "#666",
+    marginBottom: 40,
+  },
+  inputs: {
+    width: "100%",
+    marginBottom: 16,
+  },
+  inputContainer: {
+    width: "100%",
+    marginBottom: 20,
   },
   input: {
-    backgroundColor: "silver",
-    paddingVertical: 20,
-    paddingLeft: 10,
-    borderRadius: 10,
-    outlineColor: "transparent",
-    paddingHorizontal: 10,
-    fontSize: 24,
+    backgroundColor: "#fff",
+    paddingVertical: 16,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    fontSize: 16,
+    borderWidth: 1,
+    borderColor: "#e0e0e0",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  image: {
-    width: 30,
-    height: 30,
-    borderRadius: "50%",
-    justifyContent: "center",
-    alignSelf: "center",
-    marginLeft: 5,
+  inputError: {
+    borderColor: "#ff4444",
   },
-  forgot: {
-    fontSize: 22,
+  passwordContainer: {
+    position: "relative",
+  },
+  eyeIcon: {
+    position: "absolute",
+    right: 16,
+    top: 16,
+  },
+  forgotButton: {
+    alignSelf: "flex-end",
+    marginBottom: 30,
+  },
+  forgotText: {
+    fontSize: 14,
+    color: "#4285F4",
+    fontWeight: "500",
   },
   button: {
-    marginTop: 50,
-    backgroundColor: "black",
-    width: "95%",
-    borderRadius: 8,
-    paddingVertical: 15,
+    width: "100%",
+    backgroundColor: "#4285F4",
+    borderRadius: 12,
+    paddingVertical: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#4285F4",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
-  login: {
-    color: "white",
-    textAlign: "center",
-    fontSize: 20,
+  buttonDisabled: {
+    opacity: 0.7,
   },
-  account: {
-    marginTop: 50,
-  },
-  paragraph: {
-    fontSize: 20,
-  },
-  title: {
-    color: "green",
+  buttonText: {
+    color: "#fff",
+    fontSize: 18,
     fontWeight: "bold",
-    paddingLeft: 7,
+  },
+  footer: {
+    flexDirection: "row",
+    marginTop: 30,
+  },
+  footerText: {
+    fontSize: 14,
+    color: "#666",
+  },
+  footerLink: {
+    fontSize: 14,
+    color: "#4285F4",
+    fontWeight: "bold",
+  },
+  errorContainer: {
+    width: "100%",
+    backgroundColor: "#ffebee",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 20,
+  },
+  errorText: {
+    color: "#ff4444",
+    fontSize: 14,
   },
 });

@@ -5,17 +5,20 @@ export default function SearchInput() {
   return (
     <View>
       <TextInput
-        style={{
-          backgroundColor: "#EDEEF0",
-          paddingVertical: 16,
-          fontSize: 25,
-          paddingHorizontal: 10,
-          borderRadius: 16,
-          outlineColor: "#EDEEF0",
-        }}
+        style={styles.input}
         placeholderTextColor={"gray"}
         placeholder="Search Car"
       />
     </View>
   );
 }
+const styles = {
+  input: {
+    backgroundColor: "#F5F5F5",
+    borderRadius: 10,
+    padding: 15,
+    fontSize: 16,
+    color: "#000",
+    marginVertical: 10,
+  },
+};

@@ -11,7 +11,10 @@ export type rootStackPharmList = {
 const Stack = createNativeStackNavigator<rootStackPharmList>();
 export default function StackNavigator() {
   return (
-    <Stack.Navigator initialRouteName="Login">
+    <Stack.Navigator
+      initialRouteName="Login"
+      screenOptions={{ headerShown: false }}
+    >
       <Stack.Screen name="Login" component={LogIn} />
       <Stack.Screen name="Signup" component={SignUp} />
       <Stack.Screen name="Home" component={HomeScreen} />

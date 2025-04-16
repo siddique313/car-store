@@ -9,14 +9,7 @@ export const SignUp = ({ navigation }: SignupProop) => {
     <View style={styles.page}>
       <Text style={styles.head}>SIGN IN</Text>
       <Text style={styles.topic}>Welcome to CarStore</Text>
-      <View
-        style={{
-          width: "100%",
-          alignItems: "center",
-          gap: 30,
-          marginTop: 20,
-        }}
-      >
+      <View style={styles.inputContainer}>
         <View style={{ width: "95%" }}>
           <TextInput
             style={styles.input}
@@ -49,13 +42,21 @@ export const SignUp = ({ navigation }: SignupProop) => {
       </View>
 
       <View style={styles.button}>
-        <Pressable onPress={() => navigation.push("Home")} disabled={true}>
+        <Pressable onPress={() => navigation.navigate("Home")}>
           <Text style={styles.login}>Sign in</Text>
         </Pressable>
       </View>
       <View style={styles.account}>
         <Text style={styles.paragraph}>
-          Already have an account ?<Text style={styles.title}>Login</Text>
+          Already have an account ?
+          <Text
+            onPress={() => {
+              navigation.goBack();
+            }}
+            style={styles.title}
+          >
+            Login
+          </Text>
         </Text>
       </View>
     </View>
@@ -98,6 +99,12 @@ const styles = StyleSheet.create({
     outlineColor: "transparent",
     paddingHorizontal: 10,
     fontSize: 24,
+  },
+  inputContainer: {
+    width: "100%",
+    alignItems: "center",
+    gap: 30,
+    marginTop: 20,
   },
   image: {
     width: 30,

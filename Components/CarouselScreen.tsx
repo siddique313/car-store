@@ -1,13 +1,12 @@
 import * as React from "react";
-import { Dimensions, Image, View } from "react-native";
-import Carousel from "react-native-reanimated-carousel";
-
+import { Dimensions, Image, View, StyleSheet } from "react-native";
+import Swiper from "react-native-swiper";
 export default function CarouselScreen() {
   const width = Dimensions.get("window").width;
 
   // Data for carousel
   const picData = [
-    { id: 1, url: require("../assets/images/car13.jpeg") },
+    { id: 1, url: require("../assets/images/car10.jpeg") },
     { id: 2, url: require("../assets/images/car2.jpeg") },
     { id: 3, url: require("../assets/images/car11.jpeg") },
     { id: 4, url: require("../assets/images/car10.jpeg") },
@@ -16,28 +15,40 @@ export default function CarouselScreen() {
   ];
 
   return (
-    <View style={{ height: 180, alignItems: "center" }}>
-      <Carousel
-        autoPlayInterval={3000}
-        loop={true}
+    <View style={styles.container}>
+      <Swiper
+        autoplay
+        autoplayTimeout={3}
+        loop
+        showsPagination
+        dotColor="rgba(255,255,255,0.5)"
+        activeDotColor="rgb(0, 0, 0)"
         width={width}
         height={190}
-        autoPlay={true}
-        mode="parallax"
-        data={picData}
-        renderItem={({ item }: any) => (
-          <View key={item.id}>
-            <Image
-              style={{ width: "100%", height: 200, borderRadius: 20 }}
-              source={item.url}
-            />
+      >
+        {picData.map((item) => (
+          <View key={item.id} style={styles.slide}>
+            <Image style={styles.image} source={item.url} resizeMode="cover" />
           </View>
-        )}
-        snapEnabled
-        enabled
-        overscrollEnabled
-        autoFillData
-      />
+        ))}
+      </Swiper>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: 190,
+    alignItems: "center",
+  },
+  slide: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 20,
+  },
+});
